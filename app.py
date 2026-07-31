@@ -6,42 +6,35 @@ import re
 st.set_page_config(page_title="AI Paper Checker", layout="centered")
 
 st.title("📄 AI Paper Checker")
-
-st.write("Upload the student's answer sheet and enter the answer key.")
-import streamlit as st
-from PIL import Image
-import pytesseract
-import difflib
-import re
-
-st.set_page_config(page_title="AI Paper Checker", layout="centered")
-
-st.title("📄 AI Paper Checker")
 st.write("Upload the student's answer sheet and enter the answer key.")
 
+# Answer Key
 answer_key = st.text_area(
     "Enter the Correct Answer Key (one answer per line)",
     height=200
 )
 
+# Upload Image
 uploaded_file = st.file_uploader(
     "Upload Student Answer Sheet",
     type=["jpg", "jpeg", "png"]
 )
 
+# Student Answers
 student_answers = st.text_area(
     "Enter Student Answers (one answer per line)",
     height=200
 )
 
+# Show Uploaded Image
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
-     extracted_text = student_answers  extracted_text = student_answers
-    
-if uploaded_file is not None and answer_key.strip() != "":
+# Compare Answers
+if answer_key.strip() != "" and student_answers.strip() != "":
+
+    extracted_text = student_answers
 
     key_lines = [line.strip() for line in answer_key.split("\n") if line.strip()]
     student_lines = [line.strip() for line in extracted_text.split("\n") if line.strip()]
@@ -60,10 +53,7 @@ if uploaded_file is not None and answer_key.strip() != "":
             flags=re.IGNORECASE
         ).strip()
 
-        if i < len(student_lines):
-            student_answer = student_lines[i]
-        else:
-            student_answer = "No Answer"
+        student_answer = student_lines[i] if i < len(student_lines) else "No Answer"
 
         similarity = difflib.SequenceMatcher(
             None,
@@ -79,11 +69,4 @@ if uploaded_file is not None and answer_key.strip() != "":
 
         st.write("Correct Answer:", key_answer)
         st.write("Student Answer:", student_answer)
-        st.write(f"Match: {similarity*100:.0f}%")
-        st.write("---")
-
-    percentage = (correct_answers / total_questions) * 100 if total_questions > 0 else 0
-
-    st.header("Final Score")
-    st.success(f"Marks: {correct_answers}/{total_questions}")
-    st.info(f"Percentage: {percentage:.2f}%")
+        st.write(f"Match: {similarity*100:.0
