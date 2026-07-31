@@ -69,4 +69,11 @@ if answer_key.strip() != "" and student_answers.strip() != "":
 
         st.write("Correct Answer:", key_answer)
         st.write("Student Answer:", student_answer)
-        st.write(f"Match: {similarity*100:.0
+        st.write(f"Match: {similarity*100:.0f}%")
+st.write("---")
+
+percentage = (correct_answers / total_questions) * 100
+
+st.header("Final Score")
+st.success(f"Marks: {correct_answers}/{total_questions}")
+st.info(f"Percentage: {percentage:.2f}%")
