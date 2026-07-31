@@ -1,6 +1,5 @@
 import streamlit as st
 from PIL import Image
-import pytesseract
 import difflib
 import re
 
@@ -30,15 +29,18 @@ uploaded_file = st.file_uploader(
     type=["jpg", "jpeg", "png"]
 )
 
+student_answers = st.text_area(
+    "Enter Student Answers (one answer per line)",
+    height=200
+)
+
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
 
-    st.image(image, caption="Uploaded Image", use_container_width=True)
+    st.image(image, caption="Uploaded Image", use_container_width=T
 
-    extracted_text = pytesseract.image_to_string(image)
-
-    st.subheader("Extracted Text")
-    st.text(extracted_text)
+     extracted_text = student_answers  
+    
 if uploaded_file is not None and answer_key.strip() != "":
 
     key_lines = [line.strip() for line in answer_key.split("\n") if line.strip()]
